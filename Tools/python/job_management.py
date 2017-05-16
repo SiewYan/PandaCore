@@ -111,9 +111,7 @@ base_job_properties = {
     "Cmd" : "WORKDIR/exec.sh",
     "WhenToTransferOutput" : "ON_EXIT",
     "ShouldTransferFiles" : "YES",
-    "Requirements" : classad.ExprTree('UidDomain == "mit.edu" && Arch == "X86_64" && OpSysAndVer == "SL6"'),
-    "AcctGroup" : "group_t3mit.urgent",
-    "AccountingGroup" : "group_t3mit.urgent.snarayan",
+    "Requirements" : classad.ExprTree('OpSys == "LINUX" && Arch == "X86_64" && OpSysAndVer == "SL6"'),
     "X509UserProxy" : "/tmp/x509up_uUID",
     "OnExitHold" : classad.ExprTree("( ExitBySignal == true ) || ( ExitCode != 0 )"),
     "In" : "/dev/null",
@@ -130,7 +128,8 @@ job_status = {
            7:'suspended',
         }
 
-schedd_server ='t3home000.mit.edu'
+#schedd_server ='t3home000.mit.edu'
+schedd_server ='cmslpc42.fnal.gov'
 
 def environ_to_condor():
     s = '' 
@@ -152,8 +151,7 @@ class _BaseSubmission(object):
         self.cluster_id = None # HTCondor ClusterID
         self.proc_ids = None # ProcID of each job
         self.coll = htcondor.Collector()
-        self.schedd = htcondor.Schedd(self.coll.locate(htcondor.DaemonTypes.Schedd,
-                                                       schedd_server))
+        self.schedd = htcondor.Schedd(self.coll.locate(htcondor.DaemonTypes.Schedd,schedd_server))
         self.custom_job_properties = {}
 
 
@@ -189,8 +187,7 @@ class _BaseSubmission(object):
     def __setstate__(self,odict):
         self.__dict__.update(odict)
         self.coll = htcondor.Collector()
-        self.schedd = htcondor.Schedd(self.coll.locate(htcondor.DaemonTypes.Schedd,
-                                                       schedd_server))
+        self.schedd = htcondor.Schedd(self.coll.locate(htcondor.DaemonTypes.Schedd,schedd_server))
 
 
     def save(self):
@@ -202,7 +199,6 @@ class _BaseSubmission(object):
         cache.append(self)
         with open(self.cache_filepath,'wb') as fcache:
             pickle.dump(cache,fcache,2)
-
 
 class SimpleSubmission(_BaseSubmission):
     def __init__(self,cache_dir,executable=None,arglist=None,arguments=None,nper=1):
