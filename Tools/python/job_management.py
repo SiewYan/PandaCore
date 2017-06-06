@@ -5,6 +5,7 @@ from re import sub
 from condor import classad,htcondor
 import cPickle as pickle
 import time
+import os
 from os import getenv,getuid,system,path,environ
 from Misc import PInfo,PDebug,PWarning,PError
 from collections import namedtuple
@@ -111,7 +112,7 @@ base_job_properties = {
     "Cmd" : "WORKDIR/exec.sh",
     "WhenToTransferOutput" : "ON_EXIT",
     "ShouldTransferFiles" : "YES",
-    "Requirements" : classad.ExprTree('OpSys == "LINUX" && Arch == "X86_64" && OpSysAndVer == "SL6"'),
+    #"Requirements" : classad.ExprTree('OpSys == "LINUX" && Arch == "X86_64" && OpSysAndVer == "SL6"'),
     "X509UserProxy" : "/tmp/x509up_uUID",
     "OnExitHold" : classad.ExprTree("( ExitBySignal == true ) || ( ExitCode != 0 )"),
     "In" : "/dev/null",
@@ -129,7 +130,7 @@ job_status = {
         }
 
 #schedd_server ='t3home000.mit.edu'
-schedd_server ='cmslpc42.fnal.gov'
+schedd_server=os.environ["HOSTNAME"]
 
 def environ_to_condor():
     s = '' 
