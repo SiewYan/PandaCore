@@ -327,6 +327,7 @@ void CanvasDrawer::Draw(TString outDir, TString baseName) {
   }
   c->SaveAs(outDir+baseName+".png");
   c->SaveAs(outDir+baseName+".pdf");
+  c->SaveAs(outDir+baseName+".root");
 //  c->SaveAs(outDir+baseName+".C");
   PInfo("CanvasDrawer::Draw",TString::Format("Created %s %s",outDir.Data(),baseName.Data()));
 }

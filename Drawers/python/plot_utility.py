@@ -11,10 +11,12 @@ from pprint import pprint
 
 Load('HistogramDrawer')
 
-tree_name = 'events'
+#tree_name = 'events'
 
 class Process():
-    def __init__(self, name, pt, custom_color=root.nProcesses):
+    def __init__(self, name, pt='', tree_name=None, custom_color=root.nProcesses):
+        if tree_name is None:
+            tree_name='events'
         self.name = name
         self.process_type = pt
         if (custom_color==root.nProcesses):
@@ -228,6 +230,7 @@ class PlotUtility():
             for dist in self.__distributions:
                 vals = xarr[dist.name]
                 weights_nominal = xarr[weight_map['nominal']]
+                #print "dist name = ", dist.name
                 draw_hist(hist = dist.histograms[proc.name], 
                           xarr = xarr, 
                           fields = (dist.name, ), 
@@ -251,6 +254,7 @@ class PlotUtility():
 
         # everything is filled,  now draw the histograms!
         for dist in self.__distributions:
+            isDATA=False
             if dist.name=="1":
                 totals = {'bg':0,  'sig':0,  'data':0}
                 errs = {'bg':0,  'sig':0,  'data':0}
@@ -263,9 +267,16 @@ class PlotUtility():
                     h = dist.histograms[proc.name]
                     integral = h.GetBinContent(1)
                     error = h.GetBinError(1)
+                    if proc.name == 't#bar{t}':
+                        intnamettbar = proc.name
+                        intttar = integral
+                    if proc.name == 'W+jets':
+                        intnamewjets = proc.name
+                        intwjets= integral
                     table.append(table_format%(proc.name, integral, error))
                     if proc.process_type==root.kData:
                         proc_label = 'data'
+                        isDATA=True
                     elif proc.process_type<=root.kSignal3:
                         proc_label = 'sig'
                     else:
@@ -279,8 +290,11 @@ class PlotUtility():
                 table.append("=================================================================")
                 table.append(table_format%('MC(bkg)', totals['bg'], errs['bg']))
                 table.append(table_format%('MC(sig)', totals['sig'], errs['sig']))
-                table.append(table_format%('Data', totals['data'], errs['data']))
-
+                if isDATA:
+                    table.append(table_format%('Data', totals['data'], errs['data']))
+                    table.append("=================================================================")
+                    table.append('Contamination level of %-25s = %4f %%'%(intnamettbar,((intttar/totals['data'])*100)))
+                    table.append('Contamination level of %-25s = %4f %%'%(intnamewjets,((intwjets/totals['data'])*100)))
                 table.append("=================================================================")
                 if totals['bg']:
                     table.append('S/B=%.3f, S/sqrtB=%.3f'%(totals['sig']/totals['bg'], 

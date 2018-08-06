@@ -136,7 +136,7 @@ void HistogramDrawer::Draw(TString outDir, TString baseName) {
   TH1D *hRatioErrorDown = 0;
   std::vector<HistWrapper> hOthers;
 
-  c->SetLogy(doLogy&&(!doRatio));
+  //c->SetLogy(doLogy&&(!doRatio));
   
   if (doStack)
     hs = new THStack("h","");
@@ -210,7 +210,7 @@ void HistogramDrawer::Draw(TString outDir, TString baseName) {
         }
         // hSignal[pt-1]->Scale(1./hSignal[pt-1]->Integral());
       }
-    } 
+    }//signal do not stack to each other
   }
   for (int iH=nH-1; iH!=-1; --iH) {
     HistWrapper w = internalHists[iH];
@@ -350,21 +350,22 @@ void HistogramDrawer::Draw(TString outDir, TString baseName) {
       firstHist->Draw(hOthers[0].opt);
     else
       firstHist->Draw(drawOption);
-    /*
+    //I am enabling this
     if (!doRatio) {
       firstHist->GetXaxis()->SetTitle(xlabel);
     } else {
       firstHist->GetXaxis()->SetTitle("");
     }
     firstHist->GetYaxis()->SetTitle(ylabel);
-    */
+    //*/
     firstHist->GetYaxis()->SetTitleOffset(1.5);
   }
 
   // plot everything else
   if (doStack) {
     if (doAutoRange) {
-      hs->SetMinimum(minY); 
+      //hs->SetMinimum(minY);//HERE 
+      hs->SetMinimum(0.1);
       hs->SetMaximum(maxY);
     }
     hs->Draw(drawOption);

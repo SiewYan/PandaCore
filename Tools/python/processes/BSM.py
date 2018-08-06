@@ -382,5 +382,5 @@ processes =	{
         'BBbarDM_LO_MZprime-495_Mhs-90_Mchi-250_gSM-0p25_gDM-1p0_th_0p01_13TeV-madgraph':('BBbarDM_MZprime-495_Mhs-90_Mchi-250','MC',1),
         'DiJetsDM_LO_MZprime-500_Mhs-50_Mchi-10_gSM-0p25_gDM-1p0_th_0p01_13TeV-madgraph':('DiJetsDM_MZprime-500_Mhs-50_Mchi-10','MC',1),
         'DiJetsDM_LO_MZprime-1000_Mhs-50_Mchi-400_gSM-0p25_gDM-1p0_th_0p01_13TeV-madgraph':('DiJetsDM_MZprime-1000_Mhs-50_Mchi-400','MC',1),
-        
+        'BBbarDM_LO_MZprime-1000_Mhs-50_Mchi-400_gSM-0p25_gDM-1p0_th_0p01_13TeV-madgraph':('BBbarDM_MZprime-1000_Mhs-50_Mchi-400','MC',1),        
 }
